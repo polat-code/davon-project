@@ -81,4 +81,13 @@ public class UserService {
 
 
     }
+
+    public ResponseEntity<String> deleteUser(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if(user.isEmpty()){
+            return new ResponseEntity<>("There is no such an id to delete",HttpStatus.NOT_FOUND);
+        }
+        userRepository.delete(user.get());
+        return new ResponseEntity<>("User is deleted successfully",HttpStatus.OK);
+    }
 }
