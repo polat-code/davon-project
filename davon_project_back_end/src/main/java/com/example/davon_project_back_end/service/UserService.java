@@ -1,10 +1,12 @@
 package com.example.davon_project_back_end.service;
 
 import com.example.davon_project_back_end.dto.request.AddUserRequest;
+import com.example.davon_project_back_end.dto.request.UpdateUserRequest;
 import com.example.davon_project_back_end.dto.response.UserResponse;
 import com.example.davon_project_back_end.model.User;
 import com.example.davon_project_back_end.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserService {
 
+    @Autowired
     private UserRepository userRepository;
 
 
@@ -27,7 +30,7 @@ public class UserService {
 
         users.forEach((user -> {userResponseList.add(
                                         new UserResponse(
-                                                user.getUserId(),
+                                                user.getId(),
                                                 user.getName(),
                                                 user.getSurname(),
                                                 user.getTelephone(),
@@ -37,10 +40,10 @@ public class UserService {
     }
 
     public ResponseEntity<String> addNewUser(AddUserRequest addUserRequest) {
-        Optional<User> optionalUser = userRepository.findByStudentNumber(addUserRequest.getStudentNumber());
-        if(optionalUser.isPresent()){
+        if(checkIfStudentNumberAlready(addUserRequest.getStudentNumber())){
             return new ResponseEntity<>("Already used student number",HttpStatus.NOT_ACCEPTABLE);
         }
+
         User user = User.builder()
                 .name(addUserRequest.getName())
                 .surname(addUserRequest.getSurname())
@@ -51,6 +54,31 @@ public class UserService {
 
 
         return new ResponseEntity<>("User is added successfully!",HttpStatus.OK);
+
+    }
+
+
+    public boolean checkIfStudentNumberAlready(String studentNumber ){
+        Optional<User> optionalUser = userRepository.findByStudentNumber(studentNumber);
+        return optionalUser.isPresent();
+    }
+
+    public ResponseEntity<String> updateUser(UpdateUserRequest updateUserRequest) {
+        Optional<User> userByStudentNumber = userRepository.findByStudentNumber(updateUserRequest.getStudentNumber());
+        if(checkIfStudentNumberAlready(updateUserRequest.getStudentNumber()) && !updateUserRequest.getId().equals(userByStudentNumber.get().getId())) {
+            return new ResponseEntity<>("This studentNumber is used by another user",HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        User user = User.builder()
+                .id(updateUserRequest.getId())
+                .name(updateUserRequest.getName())
+                .surname(updateUserRequest.getSurname())
+                .telephone(updateUserRequest.getTelephone())
+                .studentNumber(updateUserRequest.getStudentNumber())
+                .build();
+        userRepository.save(user);
+        return new ResponseEntity<>("User is updated successfully",HttpStatus.OK);
+
 
     }
 }
