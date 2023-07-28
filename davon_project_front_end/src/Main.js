@@ -1,8 +1,20 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import UserItem from './userItem';
+import { getAllUsers } from './helper/api';
 
 
 const Main = () => {
+  const [users, setUsers] = useState([]);
+  
+  const getAllUsersFromDb = () => {
+    const response = getAllUsers();
+    setUsers(response);
+  }
+
+  useEffect(() => {
+    getAllUsersFromDb();
+  })
+  
   return (
     <div className="container">
        
@@ -24,6 +36,7 @@ const Main = () => {
                   </tr>
                 </thead>
                 <tbody>
+                  {users.map()}
                   <UserItem />
                   <UserItem />
                   

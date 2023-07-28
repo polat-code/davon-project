@@ -8,7 +8,7 @@ const Header = () => {
     <div id="header">
     <div class="container header-container">
         
-        <div id="item-left"><img src={myImage} style={styles}/></div>
+        <div id="item-left"><img src={myImage} alt='logo' style={styles}/></div>
         <div id="item-right">User Management System</div>
         
     </div>
