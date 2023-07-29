@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import {deleteUser} from "./helper/api";
 
 const UserItem = (prop) => {
   const data = prop.data;
@@ -10,6 +11,13 @@ const UserItem = (prop) => {
 
   const handleDeleteButton = async() =>{
     const id = data.userId;
+    const response = await deleteUser(id);
+    if(response.status === 200) {
+      window.location.reload();
+    }else if(response.status === 404) {
+
+    }
+
 
   }
 
