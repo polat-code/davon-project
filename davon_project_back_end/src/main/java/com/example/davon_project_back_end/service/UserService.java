@@ -65,17 +65,24 @@ public class UserService {
 
     public ResponseEntity<String> updateUser(UpdateUserRequest updateUserRequest) {
         Optional<User> userByStudentNumber = userRepository.findByStudentNumber(updateUserRequest.getStudentNumber());
+        /*
         if(checkIfStudentNumberAlready(updateUserRequest.getStudentNumber()) && !updateUserRequest.getId().equals(userByStudentNumber.get().getId())) {
             return new ResponseEntity<>("This studentNumber is used by another user",HttpStatus.NOT_ACCEPTABLE);
         }
 
-        User user = User.builder()
-                .id(updateUserRequest.getId())
-                .name(updateUserRequest.getName())
-                .surname(updateUserRequest.getSurname())
-                .telephone(updateUserRequest.getTelephone())
-                .studentNumber(updateUserRequest.getStudentNumber())
-                .build();
+
+         */
+
+        Optional<User> optionalUser = userRepository.findById(updateUserRequest.getId());
+        if(optionalUser.isEmpty()){
+            return new ResponseEntity<>("There is no user!",HttpStatus.NOT_ACCEPTABLE);
+        }
+        User user = optionalUser.get();
+        user.setName(updateUserRequest.getName());
+        user.setSurname(updateUserRequest.getSurname());
+        user.setTelephone(updateUserRequest.getTelephone());
+        user.setStudentNumber(updateUserRequest.getStudentNumber());
+
         userRepository.save(user);
         return new ResponseEntity<>("User is updated successfully",HttpStatus.OK);
 
