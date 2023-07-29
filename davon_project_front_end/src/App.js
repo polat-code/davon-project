@@ -1,15 +1,23 @@
 import "./App.css";
-import Header from "./Header";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Main from "./Main";
+import User_detail from "./User_detail";
+import { ToastContainer } from "react-toastify";
 //import User_detail from "./User_detail";
 
 function App() {
   return (
-    <div className="App">
-      <Header />
-      <Main /> 
-      {/* <User_detail />*/}
-    </div>
+    <>
+    
+    <BrowserRouter>
+    <ToastContainer />
+      <Routes>
+        <Route exact path="/" element={<Main />}></Route>
+        <Route path="/details" element={<User_detail />}></Route>
+      </Routes>
+    </BrowserRouter>
+    </>
+    
   );
 }
 

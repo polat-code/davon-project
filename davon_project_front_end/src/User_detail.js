@@ -1,6 +1,6 @@
-import React from 'react';
-import Header from './Header';
-import User_form from './User_form';
+import React from "react";
+import Header from "./Header";
+import User_form from "./User_form";
 
 const User_detail = () => {
   return (
@@ -8,7 +8,7 @@ const User_detail = () => {
       <Header />
       <User_form />
     </div>
-  )
-}
+  );
+};
 
-export default User_detail
+export default User_detail;

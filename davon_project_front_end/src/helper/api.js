@@ -7,13 +7,12 @@ export const getAllUsers = () => {
     const users = 
             axios.get(baseUrl + "/all-users")
             .then((response) => {
-                return response
+                return response.data
             })
             .catch((error) => {
                 console.error(error);
             });
     return users;
-
 };
 
 export const addNewUser = (newUser) => {
@@ -32,7 +31,7 @@ export const addNewUser = (newUser) => {
 
 export const updateUser = (updatedUser) => {
     const response = 
-                axios.post(baseUrl + "/update-user", updatedUser)
+                axios.put(baseUrl + "/update-user", updatedUser)
                 .then((response) =>{
                     return response
                 })
