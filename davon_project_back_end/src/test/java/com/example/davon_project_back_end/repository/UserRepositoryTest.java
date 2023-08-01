@@ -37,6 +37,21 @@ public class UserRepositoryTest {
 
     }
 
+    @Test
+    public void UserRepository_findByIdAndStudentNumber_ReturnUser() {
+        User user = User.builder()
+                .name("özgürhan")
+                .surname("polat")
+                .studentNumber("260201035")
+                .telephone("05531521381")
+                .build();
+        userRepository.save(user);
+        User savedUser = userRepository.findByIdAndStudentNumber(user.getId(),user.getStudentNumber()).get();
+        Assertions.assertThat(savedUser).isNotNull();
+
+    }
+
+
 
 
 }
